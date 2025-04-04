@@ -25,14 +25,14 @@ def heat_index_fahrenheit(T, R):
 # -------------------------------
 # Streamlit UI
 # -------------------------------
-st.title("🌡️ Heat Index Calculator (Feels Like Temperature)")
+st.title("Heat Index Calculator (Feels Like Temperature)")
 st.markdown("Enter the **temperature in °C** and **relative humidity in %** below.")
 
 temp_c = st.number_input("Temperature (°C)", min_value=0.0, max_value=60.0, value=32.0)
 rh = st.number_input("Relative Humidity (%)", min_value=0.0, max_value=100.0, value=70.0)
 
 if temp_c < 26.7 or rh < 40:
-    st.warning("⚠️ Formula is only accurate for T ≥ 26.7°C and RH ≥ 40%.")
+    st.warning("⚠Formula is only accurate for T ≥ 26.7°C and RH ≥ 40%.")
 else:
     temp_f = c_to_f(temp_c)
     hi_f = heat_index_fahrenheit(temp_f, rh)
@@ -42,7 +42,7 @@ else:
 # -------------------------------
 # Plotting Heat Index vs Temperature
 # -------------------------------
-st.markdown("### 📈 Heat Index Curve by Humidity")
+st.markdown("### Heat Index Curve by Humidity")
 
 temps_c = np.arange(25, 45, 1)
 humidity_levels = [40, 50, 60, 70, 80, 90]
