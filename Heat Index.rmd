@@ -1,0 +1,103 @@
+---
+title: "Heat Index Calculator and Visualization in °C"
+author: "Adrian Cuyugan"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+This project calculates and visualizes the **Heat Index** in **Celsius**, combining temperature and relative humidity. The Heat Index (or "feels like" temperature) is important in evaluating thermal comfort and health risks during warm, humid weather.
+
+---
+
+## What is the Heat Index?
+
+The **Heat Index (HI)** is an apparent temperature that reflects how hot it feels to the human body when humidity is factored in with the actual air temperature. It is widely used by meteorologists and public health professionals.
+
+### Health Risks at High HI:
+- Heat cramps
+- Heat exhaustion
+- Heat stroke (life-threatening)
+
+---
+
+## Heat Index Formula
+
+The formula was developed by the U.S. National Weather Service based on multiple regression analysis:
+
+\[
+\text{HI} = -42.379 + 2.04901523T + 10.14333127R - 0.22475541TR - 0.00683783T^2 - 0.05481717R^2 + 0.00122874T^2R + 0.00085282TR^2 - 0.00000199T^2R^2
+\]
+
+Where:
+- \( T \) = temperature in °F  
+- \( R \) = relative humidity in %
+
+> The resulting heat index is in Fahrenheit and can be converted to Celsius.
+
+### Valid Range:
+- \( T \geq 80^\circ \text{F} \) (≈ 26.7°C)
+- \( R \geq 40\% \)
+
+---
+
+## R Script
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# Required libraries
+library(ggplot2)
+library(dplyr)
+
+# Conversion functions
+c_to_f <- function(c) (c * 9/5) + 32
+f_to_c <- function(f) (f - 32) * 5/9
+
+# Heat index formula (in Fahrenheit)
+heat_index_f <- function(T, R) {
+  -42.379 + 2.04901523*T + 10.14333127*R - 0.22475541*T*R -
+    6.83783e-3*T^2 - 5.481717e-2*R^2 + 1.22874e-3*T^2*R +
+    8.5282e-4*T*R^2 - 1.99e-6*T^2*R^2
+}
+
+# --- USER INPUT ---
+temp_c <- as.numeric(readline("Enter temperature in Celsius (≥26.7°C recommended): "))
+rh <- as.numeric(readline("Enter relative humidity in % (≥40 recommended): "))
+
+# --- VALIDATION ---
+if (is.na(temp_c) || is.na(rh)) {
+  cat("Invalid input. Please enter numeric values.\n")
+} else if (temp_c < 26.7 || rh < 40) {
+  cat("Values are outside the valid range for the heat index formula.\n")
+  cat("Use only if T ≥ 26.7°C and RH ≥ 40%.\n")
+} else {
+  temp_f <- c_to_f(temp_c)
+  hi_f <- heat_index_f(temp_f, rh)
+  hi_c <- f_to_c(hi_f)
+  cat(sprintf("Heat Index (Feels Like): %.1f°C\n", hi_c))
+}
+
+# --- VISUALIZATION ---
+temps_c <- seq(25, 44, by = 1)
+rh_values <- c(40, 50, 60, 70, 80, 90)
+
+data <- expand.grid(temp_c = temps_c, rh = rh_values)
+data <- data %>%
+  mutate(temp_f = c_to_f(temp_c),
+         hi_f = heat_index_f(temp_f, rh),
+         hi_c = f_to_c(hi_f))
+
+ggplot(data, aes(x = temp_c, y = hi_c, color = factor(rh))) +
+  geom_line(size = 1.1) +
+  labs(
+    title = "Heat Index vs Temperature for Various Humidity Levels",
+    x = "Temperature (°C)",
+    y = "Heat Index (°C)",
+    color = "Relative Humidity"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    legend.position = "right"
+  )
+```
