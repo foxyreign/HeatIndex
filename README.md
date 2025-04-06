@@ -1,6 +1,6 @@
 # Heat Index Calculator
 
-This is a simple interactive **web application** built with **Streamlit** that calculates the **Heat Index** (also known as the "feels like" temperature) based on user-input **temperature in Celsius** and **relative humidity**.
+This is a simple interactive web application built with Streamlit that calculates the Heat Index (also known as the "feels like" temperature) based on user-input temperature in Celsius and relative humidity.
 
 The app also visualizes the relationship between heat index, temperature, and humidity using an interactive line chart.
 
@@ -8,7 +8,7 @@ The app also visualizes the relationship between heat index, temperature, and hu
 
 ## What is the Heat Index?
 
-The **Heat Index (HI)** is an estimate of how hot it feels to the human body when humidity is factored in with the actual air temperature. It reflects the combined effects of **air temperature** and **relative humidity** on human discomfort and heat stress.
+The **Heat Index (HI)** is an estimate of how hot it feels to the human body when humidity is factored in with the actual air temperature. It reflects the combined effects of air temperature and relative humidity on human discomfort and heat stress.
 
 > When the humidity is high, sweat evaporates more slowly, making it feel hotter than the actual air temperature.
 
@@ -26,7 +26,7 @@ Where:
 - \( T \) = Air temperature in **°F**
 - \( R \) = Relative Humidity in **%**
 
-This app converts Celsius input to Fahrenheit for the formula and converts the result back to **°C**.
+This app converts Celsius input to Fahrenheit for the formula and converts the result back to °C.
 
 > The formula is most accurate when:
 > - Temperature ≥ 26.7°C (80°F)  
